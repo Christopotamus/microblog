@@ -1,4 +1,4 @@
-Axiom==0.6.0
+Axiom==0.6.1
 BeautifulSoup==3.1.0.1
 Brlapi==0.5.5
 ClientForm==0.2.10
