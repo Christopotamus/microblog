@@ -1,5 +1,5 @@
 from django.conf.urls.defaults import patterns, include, url
-from microblogapp.views import home
+from views import home
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
