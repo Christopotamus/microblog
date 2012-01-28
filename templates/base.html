@@ -1,12 +1,16 @@
 <!DOCTYPE html>
-<head>
-<link rel='stylesheet' type='text/css' href="{{ STATIC_URL }}css/main.css" />
-<title>Woot woot</title>
-</head>
-<body>
-{% include 'header.html' %}
-{% include 'nav.html' %}
-{% block content %}{% endblock %}
-{% include 'footer.html' %}
-</body>
+<html>
+    <head>
+        <link rel='stylesheet' type='text/css' href="{{ STATIC_URL }}css/main.css" />
+        <title>Woot woot</title>
+    </head>
+    <body>
+        <div id='main-wrap'>
+            {% include 'header.html' %}
+            <div id='body-wrap'>
+            {% block content %}{% endblock %}
+            </div>
+            {% include 'footer.html' %}
+        </div>
+    </body>
 </html>
