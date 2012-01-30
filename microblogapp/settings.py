@@ -1,5 +1,7 @@
 # Django settings for microblogapp project.
-import os.path
+import os
+import sys
+import urlparse
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -147,12 +149,9 @@ LOGGING = {
         },
     }
 }
-try:
-    SENDGRID_USERNAME
-    SENDGRID_PASSWORD
-except NameError:
-    pass
-else:
+if 'SENDGRID_USERNAME' in os.environ and 'SENDGRID_PASSWORD' in os.environ:
+    SENDGRID_USERNAME = os.environ['SENDGRID_USERNAME']
+    SENDGRID_PASSWORD = os.environ['SENDGRID_PASSWORD']
     #EMAIL SETTINGS FOR SENDMAIL ADDON IN HEROKU
     EMAIL_HOST = 'smtp.sendgrid.net'
     EMAIL_HOST_USER = SENDGRID_USERNAME
