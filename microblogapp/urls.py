@@ -19,7 +19,7 @@ urlpatterns = patterns('',
     url(r'^$', home),
     url(r'^home/', home),
     url(r'^register/', register),
-    url(r'^verify/[a-zA-Z0-9]{16,16}$', verify),
+    url(r'^verify/[a-zA-Z0-9]{16,16}/$', verify),
     url(r'^login/', login),
     url(r'^logout/', logout),
 )
