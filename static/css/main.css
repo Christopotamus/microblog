@@ -18,6 +18,9 @@ html, body{
     min-height:600px;
 
 }
+#logout-form{
+    float:right;
+}
 #footer{
     width:100%;
     height:30px;

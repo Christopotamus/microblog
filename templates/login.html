@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
-    <form action="/login/" method="post">
+    {% if login_failed %}
+        <h1>Something went wrong! Try logging in again. </h1>
+    {% endif %}
+    <form action="/login/" method="post">{% csrf_token %}
         <input type="text" name="username"><br/>
         <input type="password" name="password">
         <input type="submit" value="Log in">
