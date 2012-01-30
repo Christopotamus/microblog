@@ -21,16 +21,17 @@ def home(request):
 
 def register(request):
     args = {}
-    verif_num = hashlib.md5(str(random.random())).hexdigest()[0:16]
 
     if "username" in request.POST and "password" in request.POST and "fullname" in request.POST:
         hashedPW = hashlib.md5(request.POST['password']).hexdigest()
-        new_user = Author(username=request.POST['username'],password=hashedPW,fullname=request.POST['fullname'],verif_number=verif_num)
+        new_user = Author(username=request.POST['username'],password=hashedPW,fullname=request.POST['fullname'])
     else:
         return redirect('/')
     try: 
         user = Author.objects.get(username=new_user.username)
     except Author.DoesNotExist:
+        verif_num = hashlib.md5(str(new_user.username)).hexdigest()[0:16]
+        new_user.verif_number = verif_num
         new_user.save()
         #send confirmation email with verification #
         send_mail('Welcome to Wuphf!', 'Click the link to verify! '+verif_num,'wuphf@wuphf.com',[new_user.username],fail_silently=False)
