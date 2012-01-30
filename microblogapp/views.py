@@ -16,7 +16,6 @@ def home(request):
     if isLoggedIn(request) and "user" in request.session:
         args = {"logged_in":True, "user":request.session['user']}
     
-    
     return render_to_response('index.html', args,context_instance=RequestContext(request))
 
 def register(request):
@@ -34,7 +33,8 @@ def register(request):
         new_user.verif_number = verif_num
         new_user.save()
         #send confirmation email with verification #
-        send_mail('Welcome to Wuphf!', 'Click the link to verify! '+verif_num,'wuphf@wuphf.com',[new_user.username],fail_silently=False)
+        link = '<a href=\''+str(request.get_host() +'/'+str(verif_number))+'\'/>'
+        send_mail('Welcome to Wuphf!', 'Click the link to verify!<br/> '+link,'wuphf@wuphf.com',[new_user.username],fail_silently=False)
         args = {'success':True}
     else:
         args = {'success':False}
@@ -43,6 +43,13 @@ def register(request):
     #send confirmation email
     #check for matches on username OR email 
     return redirect('/')
+
+def verify(request):
+    args = {}
+    #get number from URL
+    
+    return render_to_response('index.html', args,context_instance=RequestContext(request))
+
 
 def login(request):
     if "user" in request.session:
