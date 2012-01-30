@@ -1,8 +1,9 @@
 from django.shortcuts import render_to_response, redirect
 from django.template import Context, loader, RequestContext
 from django.http import HttpResponse
+from django.core.mail import send_mail
 from wuphf.models import *
-import hashlib
+import hashlib, random
 
 def isLoggedIn(request):
     if "user" in request.session:
@@ -20,14 +21,21 @@ def home(request):
 
 def register(request):
     args = {}
+    verif_num = hashlib.md5(str(random.random())).hexdigest()
 
     if "username" in request.POST and "password" in request.POST and "fullname" in request.POST:
         hashedPW = hashlib.md5(request.POST['password']).hexdigest()
-        new_user = Author(username=request.POST['username'],password=hashedPW,fullname=request.POST['fullname'])
+        new_user = Author(username=request.POST['username'],password=hashedPW,fullname=request.POST['fullname'],verif_number=verif_num)
+    else:
+        return redirect('/')
     try: 
         user = Author.objects.get(username=new_user.username)
     except Author.DoesNotExist:
+        print "Saving user."
         new_user.save()
+        print verif_num, username
+        #send confirmation email with verification #
+        send_mail('Welcome to Wuphf!', 'Click the link to verify! '+verif_num,'wuphf@wuphf.com',[username],fail_silently=False)
         args = {'success':True}
     else:
         args = {'success':False}
@@ -35,7 +43,7 @@ def register(request):
     #validate fields
     #send confirmation email
     #check for matches on username OR email 
-    return render_to_response('/register/',args,context_instance=RequestContext(request))
+    return redirect('/')
 
 def login(request):
     if "user" in request.session:
