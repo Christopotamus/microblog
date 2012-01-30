@@ -34,7 +34,7 @@ def register(request):
         new_user.save()
         #send confirmation email with verification #
         link = str(request.get_host() +'/verify/'+str(new_user.verif_number))+'/'
-        send_mail('Welcome to Wuphf!'+new_user.fullname, 'Click the link to verify!'+link,'wuphf@wuphf.com',[new_user.username],fail_silently=False)
+        send_mail('Welcome to Wuphf, '+new_user.fullname, 'Click the link to verify! '+link,'wuphf@wuphf.com',[new_user.username],fail_silently=False)
         args = {'success':True}
     else:
         args = {'success':False}
