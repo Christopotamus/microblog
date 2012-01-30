@@ -6,6 +6,7 @@ class auth_users(models.Model):
     password = models.CharField(max_length=40)
 
 class Author(models.Model):
+    fullname = models.CharField(max_length=60)
     username = models.CharField(max_length=40)
     password = models.CharField(max_length=40)
 

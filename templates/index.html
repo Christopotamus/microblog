@@ -1,2 +1,9 @@
 {% extends 'base.html' %}
-{% block content %}You are logged in as: {{ user }}{% endblock %}
+{% block content %}
+    {% if logged_in %}
+        
+    {% else %}
+        {% include 'registration.html' %}
+    {% endif %}
+
+{% endblock %}

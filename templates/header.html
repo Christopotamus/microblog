@@ -1,6 +1,18 @@
 <div id='header'>
-    <form id='logout-form' action="logout">
-        <input type="Submit" value="Sign Out">
+    {% if login_failed %}
+        <h1>Something went wrong! Try logging in again. </h1>
+    {% endif %}
+    {% if not logged_in %}
+    <form id='sign-in-form' action="/login/" method="post">{% csrf_token %}
+        <input class='sign-in-box'type="text" name="username" value="Username">
+        <input class='sign-in-box'type="password" name="password"value="Password">
+        <input class='sign-in-box submit-button'type="submit" value="Sign in">
     </form>
+    {% else %}
+    Welcome, {{ user }}!
+    <form id='logout-form' action="/logout/">
+        <input class='sign-in-box submit-button'type="Submit" value="Sign Out">
+    </form>
+    {% endif %}
 </div>
 {% include 'nav.html' %}

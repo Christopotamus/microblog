@@ -4,17 +4,43 @@ from django.http import HttpResponse
 from wuphf.models import *
 import hashlib
 
+def isLoggedIn(request):
+    if "user" in request.session:
+        return True
+    else:
+        return False
+
 def home(request):
     args = {}
-    if "login_failed" in request.session:
-        print request.session['login_failed']
-        args = {"login_failed":request.session['login_failed']}
-    if "user" in request.session:
-        return render_to_response('index.html', {"user":request.session['user']},context_instance=RequestContext(request))
+    if isLoggedIn(request) and "user" in request.session:
+        args = {"logged_in":True, "user":request.session['user']}
+    
+    
+    return render_to_response('index.html', args,context_instance=RequestContext(request))
+
+def register(request):
+    args = {}
+
+    if "username" in request.POST and "password" in request.POST and "fullname" in request.POST:
+        hashedPW = hashlib.md5(request.POST['password']).hexdigest()
+        new_user = Author(username=request.POST['username'],password=hashedPW,fullname=request.POST['fullname'])
+    try: 
+        user = Author.objects.get(username=new_user.username)
+    except Author.DoesNotExist:
+        new_user.save()
+        args = {'success':True}
     else:
-        return render_to_response('login.html', args,context_instance=RequestContext(request))
+        args = {'success':False}
+
+    #validate fields
+    #send confirmation email
+    #check for matches on username OR email 
+    return render_to_response('/register/',args,context_instance=RequestContext(request))
 
 def login(request):
+    if "user" in request.session:
+        del request.session['user']
+
     if 'username' in request.POST and 'password' in request.POST:
         if request.POST['username'] != '' and request.POST['password'] != '':
             username = request.POST['username']
@@ -22,14 +48,11 @@ def login(request):
             try:
                 user = auth_users.objects.get(username=username, password=password)
             except auth_users.DoesNotExist:
-                request.session['login_failed'] = True
                 return redirect('/')
             else:
                 request.session['user'] = user.username
-                request.session['login_failed'] = False 
-                return redirect('/')
+                return redirect('/home')
 
-    request.session['login_failed'] = True
     return redirect('/')
 
 def logout(request):

@@ -9,17 +9,60 @@ html, body{
     margin-right:auto;
 }
 #header{
+    position:relative;
     width:100%;
     height:50px;
-    background-color:black;
+    border-bottom:1px solid rgb(220,220,220);
 }
 #body-wrap{
     width:100%;
     min-height:600px;
 
 }
-#logout-form{
+#sign-in-form,#logout-form{
     float:right;
+    margin-top:15px;
+}
+.sign-in-box{
+    width:120px;
+    height:20px;
+    border-radius: 3px; 
+    -moz-border-radius: 3px; 
+    -webkit-border-radius: 3px; 
+    border: 1px inset #877F84;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.2);
+    -moz-box-shadow: 0 1px 0 rgba(0,0,0,0.2);
+    -webkit-box-shadow: 0 1px 0 rgba(0,0,0,0.2);
+}
+#registration-wrap{
+    margin-top:100px;
+}
+#sign-up-form{
+    float:right;
+    width:300px;
+}
+.sign-up-box{
+    margin-top:5px;
+    margin-bottom:5px;
+    font-size:14pt;
+    width:300px;
+    height:30px;
+    border-radius: 3px; 
+    -moz-border-radius: 3px; 
+    -webkit-border-radius: 3px; 
+    border: 1px inset #877F84;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.2);
+    -moz-box-shadow: 0 1px 0 rgba(0,0,0,0.2);
+}
+.submit-button,#sign-in-submit{
+    text-align:center;
+    width:65px;
+    height:25px;
+}
+#sign-in-submit{
+    float:right; 
+    width:90px;
+    height:40px;
 }
 #footer{
     width:100%;
