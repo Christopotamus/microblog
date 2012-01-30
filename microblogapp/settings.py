@@ -147,7 +147,12 @@ LOGGING = {
         },
     }
 }
-if SENDGRID_USERNAME and SENDGRID_PASSWORD:
+try:
+    SENDGRID_USERNAME
+    SENDGRID_PASSWORD
+except NameError:
+    pass
+else:
     #EMAIL SETTINGS FOR SENDMAIL ADDON IN HEROKU
     EMAIL_HOST = 'smtp.sendgrid.net'
     EMAIL_HOST_USER = SENDGRID_USERNAME
