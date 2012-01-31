@@ -29,7 +29,7 @@ def register(request):
     try: 
         user = Author.objects.get(username=new_user.username)
     except Author.DoesNotExist:
-        verif_num = hashlib.md5(str(new_user.username)).hexdigest()[0:16]
+        verif_num = hashlib.md5(str(new_user.username)+new_user.password).hexdigest()[0:16]
         new_user.verif_number = verif_num
         #send confirmation email with verification #
         link = str(request.get_host() +'/verify/'+str(new_user.verif_number))+'/'
@@ -39,8 +39,8 @@ def register(request):
             print "Error sending verification email..."
             args = {'success':False} 
         else:
-            new_user.save()
             args = {'success':True}
+            new_user.save()
     else:
         args = {'success':False}
 
@@ -60,17 +60,19 @@ def verify(request):
     if regexp.match(verif_num):
         #see if we can find the token in the database, and mark the user verified
         try:
-            author = Author.objects.get(verif_number=verif_num)
+            user = Author.objects.get(verif_number=verif_num)
         except Author.DoesNotExist:
             #ut ohs!
+            print 'Can\'t find user!'
             pass            
         else:
             #mark user as verified, redirect to homepage
-            author.verified = True
-            author.save()
+            user.verified = True
+            user.save()
+            request.session['user'] = user.fullname
+            return redirect('/home/')
     else:
-        #tell them we can't find it!
-        print 'Can\'t find user!'
+        print 'Invalid verify_number'
 
     return render_to_response('index.html', args,context_instance=RequestContext(request))
 
@@ -88,8 +90,9 @@ def login(request):
             except Author.DoesNotExist:
                 return redirect('/')
             else:
-                request.session['user'] = user.username
-                return redirect('/home')
+                if user.verified is True:
+                    request.session['user'] = user.fullname
+                    return redirect('/home')
 
     return redirect('/')
 
