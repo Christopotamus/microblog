@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+<div id='verify-wrap'>
+    {% if verify_failed %}
+    <h1>Something went wrong with your verification number. Try again. If you continue to have<br/>
+    problems please email blahbalhba </h1>
+    {% endif %}
+    <form id='sign-up-form' action='/verify/' method='post'>{% csrf_token %}
+        <input class='sign-up-box'name='verif_num'type='text' value="Verification #">
+        <input id="sign-in-submit"class='submit-button' type="submit" value="Verify">
+    </form>
+</div>
+{% endblock %}

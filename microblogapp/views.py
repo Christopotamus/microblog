@@ -13,7 +13,7 @@ def isLoggedIn(request):
 
 def home(request):
     args = {}
-    if isLoggedIn(request) and "user" in request.session:
+    if isLoggedIn(request):
         args = {"logged_in":True, "user":request.session['user']}
     
     return render_to_response('index.html', args,context_instance=RequestContext(request))
@@ -29,7 +29,7 @@ def register(request):
     try: 
         user = Author.objects.get(username=new_user.username)
     except Author.DoesNotExist:
-        verif_num = hashlib.md5(str(new_user.username)+new_user.password).hexdigest()[0:16]
+        verif_num = hashlib.md5((random.random()*1000)+str(new_user.username+new_user.password+new_user.fullname)).hexdigest()[0:16]
         new_user.verif_number = verif_num
         #send confirmation email with verification #
         link = str(request.get_host() +'/verify/'+str(new_user.verif_number))+'/'
@@ -40,7 +40,7 @@ def register(request):
             args = {'success':False} 
         else:
             args = {'success':True}
-            new_user.save()
+        new_user.save()
     else:
         args = {'success':False}
 
@@ -50,6 +50,19 @@ def register(request):
     return redirect('/')
 
 def verify(request):
+    args = {}
+    if 'verify_failed' in request.session:
+        args = {'verify_failed':request.session['verify_failed']}
+        #render a verify form 
+        return render_to_response('verify.html', args,context_instance=RequestContext(request))
+
+    if 'verif_num' in request.POST:
+        return redirect('/verify/'+str(request.POST['verif_num']+'/'))
+    else:
+        return render_to_response('verify.html', args,context_instance=RequestContext(request))
+
+#this is the function called when you click the verify link in your email
+def verify_noform(request):
     args = {}
     regexp = re.compile('[a-zA-Z0-9]{16,16}')
     
@@ -93,6 +106,9 @@ def login(request):
                 if user.verified is True:
                     request.session['user'] = user.fullname
                     return redirect('/home')
+                else:
+                    request.session['verify_failed'] = True
+                    return redirect('verify')
 
     return redirect('/')
 
