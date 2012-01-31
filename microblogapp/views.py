@@ -3,7 +3,7 @@ from django.template import Context, loader, RequestContext
 from django.http import HttpResponse
 from django.core.mail import send_mail
 from wuphf.models import *
-import hashlib, random
+import hashlib, random, re
 
 def isLoggedIn(request):
     if "user" in request.session:
@@ -51,8 +51,27 @@ def register(request):
 
 def verify(request):
     args = {}
+    regexp = re.compile('[a-zA-Z0-9]{16,16}')
+    
     #get number from URL
     
+    verif_num = request.path[8:len(request.path)-1]
+    #urlpatterns already checks this in a way, but we'll check it again anyway.
+    if regexp.match(verif_num):
+        #see if we can find the token in the database, and mark the user verified
+        try:
+            author = Author.objects.get(verif_number=verif_num)
+        except Author.DoesNotExist:
+            #ut ohs!
+            pass            
+        else:
+            #mark user as verified, redirect to homepage
+            author.verified = True
+            author.save()
+    else:
+        #tell them we can't find it!
+        print 'Can\'t find user!'
+
     return render_to_response('index.html', args,context_instance=RequestContext(request))
 
 
