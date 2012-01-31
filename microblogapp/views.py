@@ -31,11 +31,16 @@ def register(request):
     except Author.DoesNotExist:
         verif_num = hashlib.md5(str(new_user.username)).hexdigest()[0:16]
         new_user.verif_number = verif_num
-        new_user.save()
         #send confirmation email with verification #
         link = str(request.get_host() +'/verify/'+str(new_user.verif_number))+'/'
-        send_mail('Welcome to Wuphf, '+new_user.fullname, 'Click the link to verify! '+link,'wuphf@wuphf.com',[new_user.username],fail_silently=False)
-        args = {'success':True}
+        try:
+            send_mail('Welcome to Wuphf, '+new_user.fullname, 'Click the link to verify! '+link,'wuphf@wuphf.com',[new_user.username],fail_silently=False)
+        except Exception:
+            print "Error sending verification email..."
+            args = {'success':False} 
+        else:
+            new_user.save()
+            args = {'success':True}
     else:
         args = {'success':False}
 
@@ -60,8 +65,8 @@ def login(request):
             username = request.POST['username']
             password = hashlib.md5(request.POST['password']).hexdigest()
             try:
-                user = auth_users.objects.get(username=username, password=password)
-            except auth_users.DoesNotExist:
+                user = Author.objects.get(username=username, password=password)
+            except Author.DoesNotExist:
                 return redirect('/')
             else:
                 request.session['user'] = user.username
