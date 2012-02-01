@@ -12,15 +12,16 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'microblog',            # Or path to database file if using sqlite3.
-        'USER': 'microblog_public',                      # Not used with sqlite3.
-        'PASSWORD': 'microblog_public',                  # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
-    }
+if 'DB_NAME' in os.environ and 'DB_PASSWORD' in os.environ and 'DB_USER' in os.environ:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+            'NAME': os.environ['DB_NAME'],            # Or path to database file if using sqlite3.
+            'USER': os.environ['DB_USER'],                      # Not used with sqlite3.
+            'PASSWORD': os.environ['DB_PASSWORD'],                  # Not used with sqlite3.
+            'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
+            'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+        }
 }
 
 # Local time zone for this installation. Choices can be found here:
