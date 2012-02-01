@@ -15,6 +15,26 @@ html, body{
     height:50px;
     border-bottom:1px solid rgb(220,220,220);
 }
+#nav-wrap{
+    height:50px;
+    width:900px;
+}
+#nav-bar{
+    margin:0;
+    padding:0;
+    list-style:none;
+}
+.nav-link{
+    cursor:pointer;
+    font-size:18pt;
+    line-height:50px;
+    height:40px;
+    float:left;
+    margin-right:20px;
+}
+.nav-link:hover {
+    color:white;
+}
 #body-wrap{
     width:100%;
     min-height:600px;

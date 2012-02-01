@@ -16,7 +16,7 @@ def home(request):
     if isLoggedIn(request):
         args = {"logged_in":True, "user":request.session['user']}
     
-    return render_to_response('index.html', args,context_instance=RequestContext(request))
+    return render_to_response('home.html', args,context_instance=RequestContext(request))
 
 def register(request):
     args = {}
@@ -87,7 +87,7 @@ def verify_noform(request):
     else:
         print 'Invalid verify_number'
 
-    return render_to_response('index.html', args,context_instance=RequestContext(request))
+    return render_to_response('home.html', args,context_instance=RequestContext(request))
 
 
 def login(request):
