@@ -11,6 +11,7 @@ class Author(models.Model):
     password = models.CharField(max_length=40)
     verif_number = models.CharField(max_length=16)
     verified = models.BooleanField()
+    avatar_url = models.CharField(max_length=155)
 
 class Wuphf(models.Model):
     author = models.ForeignKey(Author)

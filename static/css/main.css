@@ -38,7 +38,12 @@ html, body{
 #body-wrap{
     width:100%;
     min-height:600px;
-
+    margin:15px;
+}
+#profile-wrap{
+    width:300px;
+    height:300px;
+    border:1px solid black;
 }
 #sign-in-form,#logout-form{
     float:right;
