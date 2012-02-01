@@ -1,5 +1,6 @@
 from django.conf.urls.defaults import patterns, include, url
 from microblogapp.views import *
+from microblogapp.pages import *
 
 
 # Uncomment the next two lines to enable the admin:
@@ -23,4 +24,7 @@ urlpatterns = patterns('',
     url(r'^verify/', verify),
     url(r'^login/', login),
     url(r'^logout/', logout),
+    
+    #ajax getter functions
+    url(r'^getmainwuphfs/', get_main_wuphfs),
 )

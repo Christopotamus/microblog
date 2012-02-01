@@ -12,6 +12,7 @@ class Author(models.Model):
     verif_number = models.CharField(max_length=16)
     verified = models.BooleanField()
     avatar_url = models.CharField(max_length=155)
+    subscribed_ids = models.TextField()
 
 class Wuphf(models.Model):
     author = models.ForeignKey(Author)
