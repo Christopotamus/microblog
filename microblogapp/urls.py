@@ -25,6 +25,7 @@ urlpatterns = patterns('',
     url(r'^login/', login),
     url(r'^logout/', logout),
     
-    #ajax getter functions
+    #ajax get/new post functions
     url(r'^getmainwuphfs/', get_main_wuphfs),
+    url(r'^postnewwuphf/', post_new_wuphf),
 )

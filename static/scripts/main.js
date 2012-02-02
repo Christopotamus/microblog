@@ -46,8 +46,13 @@ $(function(){
             $('.nav-link').click(function(){
 
             });
+            $('#new-wuphf-submit').click(function(){
+                postNewWuphf();
+                return false;
+            });
             //if current page is home, and we have some wuphfs to fetch
             requestHomepageWuphfs();
+            
         }
 });
 
@@ -56,11 +61,21 @@ function isLoggedIn(){
 }
 function requestHomepageWuphfs(){
     console.log("fetching homepage's wuphfs");
-    $.post("/getmainwuphfs/",{limit:"10"},function(data){
+    $.get("/getmainwuphfs/",{limit:"10"},function(data){
         console.log(data);
     });
 }
 function requestWuphfs(){
+
+}
+function postNewWuphf(){
+    console.log("Sending wuphf!");
+    //var text = $('#new-wuphf-content');
+    text = $("#new-wuphf-content")[0].value;
+    $.post("/postnewwuphf/",{"content":text},function(data){
+        console.log(data);
+    });
+    
 
 }
 function requestPage(pageId){

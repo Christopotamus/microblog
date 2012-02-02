@@ -4,6 +4,10 @@
         <script type='text/javascript'>logged_in = true;</script>
         <div id="profile-wrap"></div> 
         <div id="wuphf_wrap"></div>
+        <form id='new-wuphf-form' action="">
+            <input class=''type="textarea" name="content" id="new-wuphf-content"value="">
+            <input id='new-wuphf-submit'class='sign-in-box submit-button'type="submit" value="Wuphf!">
+        </form>
     {% else %}
         {% include 'registration.html' %}
     {% endif %}
