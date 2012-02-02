@@ -16,5 +16,6 @@ class Author(models.Model):
 
 class Wuphf(models.Model):
     author = models.ForeignKey(Author)
-    author_id = models.IntegerField()
+    author_id = models.IntegerField(blank=False, null=False)
     text = models.CharField(max_length=140)
+
