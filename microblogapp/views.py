@@ -105,6 +105,7 @@ def login(request):
             else:
                 if user.verified is True:
                     request.session['user'] = user.fullname
+                    request.session['username'] = user.username
                     request.session['userid'] = user.id
                     return redirect('/home')
                 else:

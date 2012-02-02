@@ -15,7 +15,7 @@ class Author(models.Model):
     subscribed_ids = models.TextField()
 
 class Wuphf(models.Model):
-    author = models.ForeignKey(Author)
-    author_id = models.IntegerField(blank=False, null=False)
+    #wuphf_author = models.ForeignKey(Author)
+    author_id = models.IntegerField(default=0)
     text = models.CharField(max_length=140)
 
