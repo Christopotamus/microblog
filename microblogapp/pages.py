@@ -6,15 +6,14 @@ from django.utils import simplejson
 from wuphf.models import *
 
 def get_main_wuphfs(request):
-    if request.is_ajax() and "userid" in request.session:
+    if request.is_ajax() and "userid" in request.session and "username" in request.session:
         #get wuphfs from database and return them as JSON
         try: 
             #wuphfs = Wuphf(author_id=request.session["userid"])
             #get the subscribed ids
-            #user = Author(
-            #subbed = 
-            wuphf_list = Wuphf.objects.all().filter(author_id=request.session["userid"])
-            pass
+            user = Author.objects.get(username=request.session["username"])
+            subbed = user.subscribed_ids.split(',')
+            wuphf_list = Wuphf.objects.all().filter(author_id__in=subbed)
         except Wuphf.DoesNotExist:
             return HttpResponse("Dang! no wuphfs!")     
         else:

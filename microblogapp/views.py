@@ -22,14 +22,14 @@ def register(request):
     args = {}
 
     if "username" in request.POST and "password" in request.POST and "fullname" in request.POST:
-        hashedPW = hashlib.md5(request.POST['password']).hexdigest()
+        hashedPW = hashlib.sha1(request.POST['password']).hexdigest()
         new_user = Author(username=request.POST['username'],password=hashedPW,fullname=request.POST['fullname'])
     else:
         return redirect('/')
     try: 
         user = Author.objects.get(username=new_user.username)
     except Author.DoesNotExist:
-        verif_num = hashlib.md5((random.random()*1000)+str(new_user.username+new_user.password+new_user.fullname)).hexdigest()[0:16]
+        verif_num = hashlib.sha1((random.random()*1000)+str(new_user.username+new_user.password+new_user.fullname)).hexdigest()[0:16]
         new_user.verif_number = verif_num
         #send confirmation email with verification #
         link = str(request.get_host() +'/verify/'+str(new_user.verif_number))+'/'
@@ -40,7 +40,7 @@ def register(request):
             args = {'success':False} 
         else:
             args = {'success':True}
-        new_user.save()
+            new_user.save()
     else:
         args = {'success':False}
 
@@ -97,7 +97,7 @@ def login(request):
     if 'username' in request.POST and 'password' in request.POST:
         if request.POST['username'] != '' and request.POST['password'] != '':
             username = request.POST['username']
-            password = hashlib.md5(request.POST['password']).hexdigest()
+            password = hashlib.sha1(request.POST['password']).hexdigest()
             try:
                 user = Author.objects.get(username=username, password=password)
             except Author.DoesNotExist:
