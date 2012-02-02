@@ -1,3 +1,4 @@
+import os
 from django.shortcuts import render_to_response, redirect
 from django.template import Context, loader, RequestContext
 from django.http import HttpResponse
@@ -20,8 +21,9 @@ def home(request):
 
 def register(request):
     args = {}
+    if "HASH_SALT" in os.environ:
+        salt = os.environ['HASH_SALT']
 
-    salt = os.environ['HASH_SALT']
     if "username" in request.POST and "password" in request.POST and "fullname" in request.POST:
         hashedPW = hashlib.sha1(salt+request.POST['password']).hexdigest()
         new_user = Author(username=request.POST['username'],password=hashedPW,fullname=request.POST['fullname'])
@@ -30,7 +32,7 @@ def register(request):
     try: 
         user = Author.objects.get(username=new_user.username)
     except Author.DoesNotExist:
-        verif_num = hashlib.sha1((random.random()*1000)+str(new_user.username+new_user.password+new_user.fullname)).hexdigest()[0:16]
+        verif_num = hashlib.sha1(str(random.random()*1000)+str(new_user.username+new_user.password+new_user.fullname)).hexdigest()[0:16]
         new_user.verif_number = verif_num
         #send confirmation email with verification #
         link = str(request.get_host() +'/verify/'+str(new_user.verif_number))+'/'
@@ -41,6 +43,8 @@ def register(request):
             args = {'success':False} 
         else:
             args = {'success':True}
+            new_user.save()
+            new_user.subscribed_ids = new_user.id
             new_user.save()
     else:
         args = {'success':False}
