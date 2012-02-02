@@ -21,8 +21,9 @@ def home(request):
 def register(request):
     args = {}
 
+    salt = os.environ['HASH_SALT']
     if "username" in request.POST and "password" in request.POST and "fullname" in request.POST:
-        hashedPW = hashlib.sha1(request.POST['password']).hexdigest()
+        hashedPW = hashlib.sha1(salt+request.POST['password']).hexdigest()
         new_user = Author(username=request.POST['username'],password=hashedPW,fullname=request.POST['fullname'])
     else:
         return redirect('/')
@@ -96,8 +97,9 @@ def login(request):
 
     if 'username' in request.POST and 'password' in request.POST:
         if request.POST['username'] != '' and request.POST['password'] != '':
+            salt = os.environ['HASH_SALT']
             username = request.POST['username']
-            password = hashlib.sha1(request.POST['password']).hexdigest()
+            password = hashlib.sha1(salt+request.POST['password']).hexdigest()
             try:
                 user = Author.objects.get(username=username, password=password)
             except Author.DoesNotExist:
