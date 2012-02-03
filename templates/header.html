@@ -5,7 +5,7 @@
     {% if not logged_in %}
         <form id='sign-in-form' action="/login/" method="post">{% csrf_token %}
             <input class='sign-in-box'type="text" name="username" value="Username">
-            <input class='sign-in-box'type="password" name="password"value="Password">
+            <input class='sign-in-box'type="text" name="password"value="Password">
             <input class='sign-in-box submit-button'type="submit" value="Sign in">
         </form>
     {% else %}

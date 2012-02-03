@@ -8,7 +8,7 @@ class auth_users(models.Model):
 class Author(models.Model):
     fullname = models.CharField(max_length=60)
     username = models.CharField(max_length=40)
-    password = models.CharField(max_length=40)
+    password = models.CharField(max_length=255)
     verif_number = models.CharField(max_length=16)
     verified = models.BooleanField()
     avatar_url = models.CharField(max_length=155)
