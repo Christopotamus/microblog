@@ -43,13 +43,17 @@ $(document).ajaxSend(function(event, xhr, settings) {
 
 $(function(){
         if(isLoggedIn()){
-            $('.nav-link').click(function(){
-
+            $(".nav-link").click(function(){
+                
             });
-            $('#new-wuphf-submit').click(function(){
+            $(".nav-link:#wuphf").click(function(){
+                $("#new-wuphf-form").toggle('slow');
+            });
+            $("#new-wuphf-submit").click(function(){
                 postNewWuphf();
                 return false;
             });
+            //$("#new-wuphf-form");
             //if current page is home, and we have some wuphfs to fetch
             requestHomepageWuphfs();
             
@@ -74,6 +78,7 @@ function postNewWuphf(){
     text = $("#new-wuphf-content")[0].value;
     $.post("/postnewwuphf/",{"content":text},function(data){
         console.log(data);
+        $("#new-wuphf-form").toggle('slow');
     });
     
 

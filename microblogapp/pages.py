@@ -27,14 +27,15 @@ def post_new_wuphf(request):
     if request.is_ajax() and "username" in request.session and "userid" in request.session: 
         #print request.session["userid"] + ' ' + request.POST["content"]
         if "content" in request.POST:
-            try:
-                #username = request.session['username']
-                #author = Author.objects.get(username=username)
-                wuphf = Wuphf(author_id=int(request.session["userid"]),text=str(request.POST["content"]))
-                #apparently python's special meaning for _ breaks the constuctor.
-                wuphf.save()
-                return HttpResponse("Wuphf sent!")
-            except:
-                return HttpResponse("damn it!")
+            if len(str(request.POST["content"])):
+                try:
+                    #username = request.session['username']
+                    #author = Author.objects.get(username=username)
+                    wuphf = Wuphf(author_id=int(request.session["userid"]),text=str(request.POST["content"]))
+                    #apparently python's special meaning for _ breaks the constuctor.
+                    wuphf.save()
+                    return HttpResponse("Wuphf sent!")
+                except:
+                    return HttpResponse("damn it!")
     else:
         return HttpResponse(status=400)     
