@@ -72,16 +72,21 @@ function requestHomepageWuphfs(){
 function requestWuphfs(){
 
 }
-function doesntExist(post_id){
-    var loadedPosts = $(".single_wuphf_wrap");
-    console.log(loadedPosts);
+function doesntExist(posts, post_id){
+    if(posts.size() > 0){
+        for(var i=0; i < posts.size(); i++){
+            if(posts[i].getAttribute("post_id") == post_id)
+                return false;
+        }
+    }
     return true;
 }
 function addNewWuphfs(data){
-    for(var i in data){
+    var loadedPosts = $(".single_wuphf_wrap");
+    for(var i in data.reverse()){
         data[i]["fields"].post_id = data[i].pk;
-        if(doesntExist(data[i].pk))
-            $("#wuphf_wrap").append(createWuphf(data[i]["fields"]));
+        if(doesntExist(loadedPosts, data[i].pk))
+            $("#wuphf_wrap").prepend(createWuphf(data[i]["fields"]));
     }
 }
 function createWuphf(wuphfData){
