@@ -66,19 +66,48 @@ function isLoggedIn(){
 function requestHomepageWuphfs(){
     console.log("fetching homepage's wuphfs");
     $.get("/getmainwuphfs/",{limit:"10"},function(data){
-        console.log(data);
+        addNewWuphfs($.parseJSON(data));
     });
 }
 function requestWuphfs(){
 
+}
+function doesntExist(post_id){
+    var loadedPosts = $(".single_wuphf_wrap");
+    console.log(loadedPosts);
+    return true;
+}
+function addNewWuphfs(data){
+    for(var i in data){
+        data[i]["fields"].post_id = data[i].pk;
+        if(doesntExist(data[i].pk))
+            $("#wuphf_wrap").append(createWuphf(data[i]["fields"]));
+    }
+}
+function createWuphf(wuphfData){
+    var wuphfDiv = document.createElement("Div");
+    var wuphfAuthor = document.createElement("Div");
+    var wuphfBody = document.createElement("Div");
+
+    wuphfDiv.setAttribute("class", "single_wuphf_wrap");
+    wuphfDiv.setAttribute("post_id", wuphfData.post_id);
+    wuphfBody.setAttribute("class", "wuphf_body");    
+    wuphfBody.innerHTML = wuphfData.text;
+    wuphfAuthor.setAttribute("class", "wuphf_author");
+    wuphfAuthor.setAttribute("id", wuphfData.author_id);
+    wuphfDiv.appendChild(wuphfAuthor);
+    wuphfDiv.appendChild(wuphfBody);
+
+    return wuphfDiv;
 }
 function postNewWuphf(){
     console.log("Sending wuphf!");
     //var text = $('#new-wuphf-content');
     text = $("#new-wuphf-content")[0].value;
     $.post("/postnewwuphf/",{"content":text},function(data){
-        console.log(data);
         $("#new-wuphf-form").toggle('slow');
+        requestHomepageWuphfs();
+        console.log(data);
     });
     
 
